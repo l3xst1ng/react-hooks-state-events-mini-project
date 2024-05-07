@@ -1,23 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
+import { CATEGORIES, TASKS } from "../data";
 
-function CategoryFilter({ categories, selectedCategory, changeCategory }) {
-  const categoryButtons = categories.map((category, index) => {
-    const className = category === selectedCategory ? "selected" : null;
-    return (
-      <button
-        onClick={() => changeCategory(category)}
-        className={className}
-        key={index}
-      >
-        {category}
-      </button>
+function CategoryFilter({ setTasks }) {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const handleCategorySelection = (category) => {
+    setSelectedCategory(category);
+    setTasks(
+      category === "All"
+        ? TASKS
+        : TASKS.filter((task) => task.category === category)
     );
-  });
+  };
   return (
     <div className="categories">
       <h5>Category filters</h5>
-      {/* render <button> elements for each category here */}
-      {categoryButtons}
+      {CATEGORIES.map((category) => (
+        <button
+          key={category}
+          className={category === selectedCategory ? "selected" : ""}
+          onClick={() => handleCategorySelection(category)}
+        >
+          {category}
+        </button>
+      ))}
     </div>
   );
 }
